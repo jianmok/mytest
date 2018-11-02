@@ -2,6 +2,7 @@ const service = require('../service/apiService');
 var myPromise = require('bluebird');
 const utilService = require('../service/utilService');
 const userInfoDao = require('../dao/userInfoDao');
+const userTokenDao = require('../dao/userTokenDao');
 function registerService() {
 }
 /**
@@ -10,6 +11,7 @@ function registerService() {
 registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
     return new myPromise(async(resolve, reject) => {
         try{
+            console.log("qqqqqqqqq");
         let resultObj = {};
         let ifInuserTable = await userInfoDao.ifInuserTable(name);
         if(ifInuserTable == null){
@@ -17,11 +19,14 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
                 resultObj.code = "002";
                 resultObj.responsecode = "密码为空";
             }else{
+                console.log("jjjjjjjjjjj",ifInuserTable);
             let createTime = new Date();
             password = utilService.md5Password(password);
             let userId = utilService.createUserId(createTime);
-            let data = await userInfoDao.addser(userId, name, trueName, password,Tel,createTime);
-            if(data && data.length){
+            let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime);
+            let token = utilService.createToken(userId);
+            let userToken = await userTokenDao.addUserToken(userId, token);
+            if(data && data.length && userToken && userToken.length){
                 resultObj.code = "003";
                 resultObj.responsecode = "失败";
             }else{

@@ -25,6 +25,10 @@ const userInfoDao = {
                 Tel: Tel,
                 createTime: createTime,
             }).then(data =>{
+                console.log("111111",data);
+                console.log("222222222,",data.get({
+                    plain:true
+                }))
                 resolve(data);
             },(err => {
                 reject(err);

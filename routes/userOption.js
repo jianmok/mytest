@@ -1,8 +1,11 @@
 const express = require('express');
 const myPromise = require('bluebird');
-var constant = require('../config/constant');
+const constant = require('../config/constant');
 const apiService = require('../service/apiService');
+const utilService = require('../service/utilService');
 const newDoc = (req, res) => {
+    const userId = utilService.getCurrentUserId(req);
+    console.log(userId);
     // let userId = req.query.userId ? userId: null;
     let name = req.query.name;
     let trueName = req.query.trueName? trueName:null;
@@ -15,6 +18,7 @@ const newDoc = (req, res) => {
 }
 
 const deleteDoc = (req, res) => {
+    const userId = utilService.getCurrentUserId(req);
     let name = req.query.name;
     let password = req.query.password; 
     let docOptionServices = apiService.docOptionService;
@@ -23,6 +27,7 @@ const deleteDoc = (req, res) => {
     })
 }
 const getDoc = (req, res) => {
+    const userId = utilService.getCurrentUserId(req);
     let name = req.query.name;
     let password = req.query.password; 
     let docOptionServices = apiService.docOptionService;

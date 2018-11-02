@@ -16,10 +16,12 @@ const util = {
         data = md5.digest('hex'); 
         return data;
     },
+    //动态生成用户id
     createUserId:function(createTime){
         createTime = moment(createTime).unix();
         return createTime;
     },
+    //生成验证的token
     createToken: function(userId) {
         var infoStr = userId + config.version + config.salt;
         var buf = new Buffer(infoStr); //解决中文不一致的BUG
@@ -28,6 +30,10 @@ const util = {
         md5.update(str);
         var sign = md5.digest('hex');
         return sign;
+    },
+    //获得当前用户
+    getCurrentUserId: function(req) {
+        return (req.headers.currentuserid != '0' ? req.headers.currentuserid : null);
     },
 }
 module.exports = (util);
