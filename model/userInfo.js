@@ -1,5 +1,6 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
+const docName = require('../model/docName');
 const  UserInfo = sequelize.define('userInfo', {
     //用户id
     'userId': {

@@ -3,6 +3,8 @@ var myPromise = require('bluebird');
 const utilService = require('../service/utilService');
 const userInfoDao = require('../dao/userInfoDao');
 const userTokenDao = require('../dao/userTokenDao');
+const constant = require('../config/constant');
+const docNameDao = require('../dao/docNameDao');
 function registerService() {
 }
 /**
@@ -11,7 +13,6 @@ function registerService() {
 registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
     return new myPromise(async(resolve, reject) => {
         try{
-            console.log("qqqqqqqqq");
         let resultObj = {};
         let ifInuserTable = await userInfoDao.ifInuserTable(name);
         if(ifInuserTable == null){
@@ -19,14 +20,19 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
                 resultObj.code = "002";
                 resultObj.responsecode = "密码为空";
             }else{
-                console.log("jjjjjjjjjjj",ifInuserTable);
             let createTime = new Date();
             password = utilService.md5Password(password);
             let userId = utilService.createUserId(createTime);
             let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime);
             let token = utilService.createToken(userId);
             let userToken = await userTokenDao.addUserToken(userId, token);
-            if(data && data.length && userToken && userToken.length){
+            let docfileName = constant.defaultdocumentName;
+            let docType = constant.defaultdocType;
+            console.log("ccccccccccccc",docfileName);
+            let level = constant.doclevel;
+            let parentId = constant.parentIdone;
+            let defaultdocName = await  docNameDao.adddocName(userId, docfileName, level, docType, parentId);
+            if(data && data.length && userToken && userToken.length && defaultdocName && defaultdocName.length){
                 resultObj.code = "003";
                 resultObj.responsecode = "失败";
             }else{

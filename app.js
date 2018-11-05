@@ -25,7 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 var isAuthenticated = (req, res, next) => {
   if (req.headers.currentuserid !== undefined) {
     var currentUserId = req.headers.currentuserid;
+    console.log("zzzzzzzzzzzzzzzzs",currentUserId);
     var correctToken = utilService.createToken(currentUserId);
+    console.log("zzzzzzzzzzzzzzzzs",correctToken);
     if (correctToken === req.headers.token) {
       return next();
     }
@@ -44,7 +46,7 @@ var isAuthenticated = (req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-//register
+//restful
 require('./routes/register')(app);
 require('./routes/userOption')(app, isAuthenticated);
 

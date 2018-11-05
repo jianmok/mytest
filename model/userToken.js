@@ -1,5 +1,6 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
+const UserInfo = require('../model/userInfo');
 const  UserToken = sequelize.define('userToken', {
     //id
     'id':{
@@ -32,4 +33,6 @@ const  UserToken = sequelize.define('userToken', {
     // 不需要时间戳
     'timestamps': false,
 });
+UserInfo.hasMany(UserToken,{primaryKey:'userId',sourceKey:'userId'});
+UserToken.belongsTo(UserInfo,{primaryKey:'userId',targetKey:'userId'});
 module.exports = UserToken;

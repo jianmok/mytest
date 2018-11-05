@@ -1,6 +1,6 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
-const  UserInfo = sequelize.define('userInfo', {
+const inputInfo = sequelize.define('inputInfo', {
     //用户id
     'userId': {
         'type': Sequelize.INTEGER,
@@ -46,4 +46,6 @@ const  UserInfo = sequelize.define('userInfo', {
     // 不需要时间戳
     'timestamps': false,
 });
-module.exports = UserInfo;
+UserInfo.hasMany(inputInfo,{primaryKey:'userId',sourceKey:'userId'});
+inputInfo.belongsTo(userIndo,{primaryKey:'userId',sourceKey:'userId'});
+module.exports = inputInfo;

@@ -1,33 +1,34 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
-const  UserInfo = sequelize.define('userInfo', {
+const UserInfo = require('../model/userInfo');
+const  UserOption = sequelize.define('UserOption', {
     //用户id
     'userId': {
         'type': Sequelize.INTEGER,
-        'field': 'user_Id  ',
-        'allowNull': false,
-        'unique': true,
-        'primaryKey': true
+        'field': 'user_Id',
     },  
     //文件id
     'id': {
         'type': Sequelize.INTEGER,
-        'field': 'id '
+        'field': 'id',
+        'allowNull': false,
+        'unique': true,
+        'primaryKey': true
     },
     //文件名id
     'doc_Name_id': {
         'type': Sequelize.STRING,
-        'field': 'doc_Name_id '
+        'field': 'doc_Name_id'
     },
     //文件类型（文件夹等）
     'docType': {
         'type': Sequelize.INTEGER,
-        'field': 'doc_Type  '
+        'field': 'doc_Type'
     },
     //操作时间
     'create_Time ': {
         'type': Sequelize.INTEGER,
-        'field': 'create_Time '
+        'field': 'create_Time'
     },
     //备注
     'remark': {
@@ -41,4 +42,6 @@ const  UserInfo = sequelize.define('userInfo', {
     // 不需要时间戳
     'timestamps': false,
 });
-module.exports = UserInfo;
+UserInfo.hasMany(UserOption,{primaryKey:'userId',sourceKey:'userId'});
+UserOption.belongsTo(userIndo,{primaryKey:'userId',sourceKey:'userId'});
+module.exports = UserOption;
