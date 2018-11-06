@@ -46,6 +46,6 @@ const inputInfo = sequelize.define('inputInfo', {
     // 不需要时间戳
     'timestamps': false,
 });
-UserInfo.hasMany(inputInfo,{primaryKey:'userId',sourceKey:'userId'});
-inputInfo.belongsTo(userIndo,{primaryKey:'userId',sourceKey:'userId'});
+UserInfo.hasMany(inputInfo,{foreignKey:'userId',sourceKey:'userId'});
+inputInfo.belongsTo(userIndo,{foreignKey:'userId',sourceKey:'userId'});
 module.exports = inputInfo;

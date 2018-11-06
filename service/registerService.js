@@ -36,8 +36,7 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
                 resultObj.code = "003";
                 resultObj.responsecode = "失败";
             }else{
-                resultObj.code = "000";
-                resultObj.responsecode = "成功";
+                resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
             }
         }
         }else{
@@ -68,8 +67,7 @@ registerService.prototype.iflogin = (name,password) => {
             password = utilService.md5Password(password);
             let data = await userInfoDao.findifHaveuser(name, password);
             if(data != null){
-                resultObj.code = "000";
-                resultObj.responsecode = "成功";
+                resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
             }else{
                 resultObj.code = "005";
                 resultObj.responsecode = "重新输入密码"

@@ -53,7 +53,7 @@ const  docName = sequelize.define('docName', {
     // 不需要时间戳
     'timestamps': false,
 });
-UserInfo.hasMany(docName,{primaryKey:'userId',sourceKey:'userId'});
-docName.belongsTo(UserInfo,{primaryKey:'userId',targetKey:'userId'});
+UserInfo.hasMany(docName,{foreignKey:'userId',sourceKey:'userId'});
+docName.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
 
 module.exports = docName;
