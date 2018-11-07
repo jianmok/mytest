@@ -98,10 +98,25 @@ const docNameDao = {
                     Doc_Type : 5004
                 }
             }).then(data => {
+                console.log("aaaaaaaaaaaaaa",data);
                 resolve(data);
             },(err => {
                 console.log("111111111",err);
                 reject(err);
+            }))
+        })
+    },
+    findFileNamebyParentId:(userId, parentId) => {
+        return new myPromise((resolve, reject) => {
+            docName.findAll({
+                where:{
+                    origin_parent_id: parentId,
+                    user_Id: userId
+                }
+            }).then(data => {
+                resolve(data);
+            },(err => {
+                resolve(err);
             }))
         })
     }

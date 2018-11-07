@@ -43,5 +43,5 @@ const  UserOption = sequelize.define('UserOption', {
     'timestamps': false,
 });
 UserInfo.hasMany(UserOption,{foreignKey:'userId',sourceKey:'userId'});
-UserOption.belongsTo(userIndo,{foreignKey:'userId',sourceKey:'userId'});
+UserOption.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
 module.exports = UserOption;

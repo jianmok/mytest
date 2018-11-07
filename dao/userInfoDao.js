@@ -14,7 +14,10 @@ const userInfoDao = {
             }))
         })
     },
-
+    /**
+     * 用户注册
+     * 向用户信息表添加注册信息
+     */
     addUser:(userId, name,trueName, password,Tel,createTime) => {
         return new MyPromise((resolve, reject) => {
             userInfo.create({
@@ -32,7 +35,7 @@ const userInfoDao = {
         })
     },
     /**
-     * 判断是否登录
+     * 判断是否密码匹配
      */
     findifHaveuser:(name, password) => {
         return new MyPromise((resolve, reject) => {

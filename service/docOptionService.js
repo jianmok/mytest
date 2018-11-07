@@ -1,9 +1,10 @@
 const service = require('../service/apiService');
-var myPromise = require('bluebird');
+const myPromise = require('bluebird');
 const utilService = require('../service/utilService');
 const userInfoDao = require('../dao/userInfoDao');
 const docNameDao = require('../dao/docNameDao');
 const constant = require('../config/constant');
+const userOptionDao = require('../dao/userOptionDao');
 function docOptionService() {
 }
 /**
@@ -57,6 +58,8 @@ docOptionService.prototype.getDocName = (userId) => {
             if(data && data.length){
                 resultObj.list = data;
                 resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Success);
+            }else{
+                resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Null);
             }
             resolve(resultObj);
         },(err => {
@@ -69,15 +72,22 @@ docOptionService.prototype.getDocName = (userId) => {
  */
 docOptionService.prototype.getDocFile = (userId, parentId) => {
     return new myPromise((resolve, reject) => {
+        let promList = [];
         let resultObj = {};
-        docNameDao.findFileNamebyParentId(userId, parentId).then(data => {
+        promList.push(docNameDao.findFileNamebyParentId(userId, parentId));
+        promList.push(userOptionDao.findFilebyParentId(userId, parentId));
+        myPromise.all(promList).then(data => {
             if(data && data.length){
                 resultObj.list = data;
-                resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
-               
+                resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Success);
+            }else{
+                resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Null)
             }
+            resolve(resultObj);
+        },(err => {
+            reject(err);
+        }))
         })
-    })
 }
 
 module.exports = docOptionService;

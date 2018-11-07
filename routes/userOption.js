@@ -3,6 +3,33 @@ const myPromise = require('bluebird');
 const constant = require('../config/constant');
 const apiService = require('../service/apiService');
 const utilService = require('../service/utilService');
+
+/**
+ * 根据userId获取文件夹id
+ * 返回信息包括：文件id
+ *              文件类型
+ *              文件名  
+ */
+const getDoc = (req, res) => {
+    const userId = utilService.getCurrentUserId(req);
+    let docOptionServices = apiService.docOptionService;
+    docOptionServices.getDocName(userId).then(data => {
+        res.send(data);
+    })
+}
+
+/**
+ * 根据文件夹id获取其中的文件（文件id、创建时间）
+ */
+const getDocFile = (req, res) => {
+    const userId = utilService.getCurrentUserId(req);
+    let parentId = req.query.parentId;
+    let docOptionServices = apiService.docOptionService;
+    docOptionServices.getDocFile(userId, parentId).then(data => {
+        res.send(data);
+    })
+}
+
 /**
  * 
  * @param  docName  文件名
@@ -43,32 +70,6 @@ const deleteDoc = (req, res) => {
 const  docInput = (req,res) => {
     const userId = utilService.getCurrentUserId(req);
     console.log()
-}
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- * 根据userId获取文件夹id
- * 返回信息包括：文件id
- *              文件类型
- *              文件名
- *              
- */
-const getDoc = (req, res) => {
-    const userId = utilService.getCurrentUserId(req);
-    let docOptionServices = apiService.docOptionService;
-    docOptionServices.getDocName(userId).then(data => {
-        res.send(data);
-    })
-}
-
-const getDocFile = (req, res) => {
-    const userId = utilService.getCurrentUserId(req);
-    let parentId = req.query.parentId;
-    let docOptionServices = apiService.docOptionService;
-    docOptionServices.getDocFile(userId, parentId).then(data => {
-        res.send(data);
-    })
 }
 module.exports  = function(app, isAuthenticated) {
     var __base_path_api = constant.api_version + "/userOption"; 

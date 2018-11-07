@@ -1,23 +1,29 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
+const UserInfo = require('../model/userInfo');
 const inputInfo = sequelize.define('inputInfo', {
     //用户id
     'userId': {
         'type': Sequelize.INTEGER,
         'field': 'user_Id  ',
+    },  
+    //input表id
+    'id': {
+        'type': Sequelize.INTEGER,
+        'field': 'id',
         'allowNull': false,
         'unique': true,
         'primaryKey': true
-    },  
-    //文件id
-    'id': {
-        'type': Sequelize.INTEGER,
-        'field': 'id '
     },
-    //文件地址id
+    //文件名表地址id
     'docNameid': {
         'type': Sequelize.INTEGER,
         'field': 'doc_Name_id '
+    },
+    //父节点
+    'originparentid ': {
+        'type': Sequelize.INTEGER,
+        'field': 'origin_parent_id'
     },
     //内容
     'detailInfo ': {
@@ -47,5 +53,5 @@ const inputInfo = sequelize.define('inputInfo', {
     'timestamps': false,
 });
 UserInfo.hasMany(inputInfo,{foreignKey:'userId',sourceKey:'userId'});
-inputInfo.belongsTo(userIndo,{foreignKey:'userId',sourceKey:'userId'});
+inputInfo.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
 module.exports = inputInfo;
