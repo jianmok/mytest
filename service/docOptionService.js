@@ -15,7 +15,7 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
         let level;
         let resultObj = {};
         parseInt(docType);
-        if(docType == 1){
+        if(docType == 5001){
             if(docComment && docComment.length){
                 docfileName = docComment.slice(0,20);
             }
@@ -68,7 +68,7 @@ docOptionService.prototype.getDocName = (userId) => {
     })
 }
 /**
- * 获取文件夹文档
+ * 根据文件夹id获取其中的文件（文件id、创建时间）
  */
 docOptionService.prototype.getDocFile = (userId, parentId) => {
     return new myPromise((resolve, reject) => {

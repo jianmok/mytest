@@ -25,6 +25,11 @@ const  UserOption = sequelize.define('UserOption', {
         'type': Sequelize.INTEGER,
         'field': 'doc_Type'
     },
+    //操作类型(添加删除等)
+    'optionType': {
+        'type': Sequelize.INTEGER,
+        'field': 'option_Type'
+    },
     //操作时间
     'create_Time ': {
         'type': Sequelize.INTEGER,

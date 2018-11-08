@@ -34,8 +34,9 @@ const getDocFile = (req, res) => {
  * 
  * @param  docName  文件名
  * @param  docComment 文件内容
- * @param  docComment 文件类型(1:笔记；2：markdown; 3:笔记模板; 4：新建文件夹（此默认在我的文件中的我的收藏被添加）)
- * @param  
+ * @param  docComment 文件类型(5001:笔记；5002：markdown; 5003:笔记模板; 5004：新建文件夹（此默认在我的文件中的我的收藏被添加）)
+ * 
+ * @param  option 添加或删除
  */
 const newDoc = (req, res) => {
     const userId = utilService.getCurrentUserId(req);
