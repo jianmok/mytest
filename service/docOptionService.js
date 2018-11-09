@@ -15,20 +15,26 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
         let level;
         let resultObj = {};
         parseInt(docType);
+        let data = docNameDao.finddefaultFile(userId);//5001,5002,5003默认存储地方
+        if(data && data.length){
+            utilService.dataValuesFormat(data);
+            parentId = data.parentId;
+            level = 2;
+        }
         if(docType == 5001){
             if(docComment && docComment.length){
                 docfileName = docComment.slice(0,20);
             }
+            // OptionType = 
         }
-        if(docType == 4){
+        if(docType == constant.defaultDocument){
             level = 1; 
-            parentId = 0;
-        }else{
-            level = 2;
+            // parentId = 0;
         }
-
         console.log("zhang",docfileName);
         let answer = await docNameDao.addaFile(userId, docfileName, level, docType, parentId);
+        console.log("111111111111",answer);
+        // let datas = await userOptionDao.addOption(userId,docName, docType, )
         if(answer && answer.length){
             resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
             resolve(resultObj);

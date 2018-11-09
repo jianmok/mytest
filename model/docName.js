@@ -56,4 +56,5 @@ const  docName = sequelize.define('docName', {
 UserInfo.hasMany(docName,{foreignKey:'userId',sourceKey:'userId'});
 docName.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
 
+
 module.exports = docName;

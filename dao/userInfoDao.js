@@ -20,6 +20,7 @@ const userInfoDao = {
      */
     addUser:(userId, name,trueName, password,Tel,createTime) => {
         return new MyPromise((resolve, reject) => {
+            console.log("1111111111",createTime);
             userInfo.create({
                 userId: userId,
                 userName: name,

@@ -13,7 +13,11 @@ const testRegister = (req, res) => {
         res.send(data);
     }) 
 }
-
+/**
+ * 登录
+ * @param {*} req 
+ * @param {*} res 
+ */
 const register = (req, res) => {
     let name = req.query.name;
     let password = req.query.password; 
@@ -27,9 +31,4 @@ module.exports  = function(app) {
     var __base_path_api = constant.api_version + "/register"; 
     app.post(__base_path_api + '/testRegister', testRegister); //注册
     app.get(__base_path_api + '/register',register);//登录
-    // app.post(__base_path_api + 'NewDoc',newDoc);//新增文件
-    // app.post(__base_path_api + 'deleteDoc',deleteDoc)//删除文件
-    //获取文件
-    //保存文件（保存按钮)
-
 };

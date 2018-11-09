@@ -36,7 +36,8 @@ const getDocFile = (req, res) => {
  * @param  docComment 文件内容
  * @param  docComment 文件类型(5001:笔记；5002：markdown; 5003:笔记模板; 5004：新建文件夹（此默认在我的文件中的我的收藏被添加）)
  * 
- * @param  option 添加或删除
+ * @param  option 添加文件包括文件夹和文件
+ * @param  level 此项若是文件夹内的添加需要传输，否则为null;
  */
 const newDoc = (req, res) => {
     const userId = utilService.getCurrentUserId(req);
@@ -44,13 +45,20 @@ const newDoc = (req, res) => {
     let docfileName = req.query.docfileName;
     let docComment = req.body.docComment;
     let docType = req.query.docType;
-    let parentId = req.query.parentId? parentId: null;
-    let level = req.query.level? level: null;
+    let parentId = req.query.parentId? parentId: 0;//此项若是文件夹内的需要传输
+    let level = req.query.level? level: null;//父节点的level,若是文件夹内的需要穿，否则传输为1
     let docOptionServices = apiService.docOptionService;
     docOptionServices.saveDocument(userId, docfileName, docComment,parentId, docType, level).then(data => {
         res.send(data);
     }) 
 }
+/**
+ * 还需一个获取文件夹名的接口
+ * @param {*} req 
+ * @param {*} res 
+ */
+
+
 /**
  * 删除文件包括文件夹和文件
  * @param {} req 
@@ -68,10 +76,10 @@ const deleteDoc = (req, res) => {
 /**
  * 上传文件和文件夹
  */
-const  docInput = (req,res) => {
-    const userId = utilService.getCurrentUserId(req);
-    console.log()
-}
+// const  docInput = (req,res) => {
+//     const userId = utilService.getCurrentUserId(req);
+//     console.log()
+// }
 module.exports  = function(app, isAuthenticated) {
     var __base_path_api = constant.api_version + "/userOption"; 
     app.post(__base_path_api + '/NewDoc',isAuthenticated, newDoc);//新增文件

@@ -18,5 +18,24 @@ const userOptionDao = {
             }))
         })
     },
+    /**
+     * 添加用户操作信息
+     */
+    adduserOption:(userId, docNameid, optionType, docType) => {
+        return new MyPromise((resolve, reject) => {
+            userOption.create({
+                userId: userId,
+                docNameid: docNameid,
+                docType:docType,
+                optionType: optionType
+            }).then(data => {
+                resolve(data);
+            },(err => {
+                reject(err);
+            }))
+        })
+    }
+
+
 }
 module.exports = userOptionDao;

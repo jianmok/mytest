@@ -1,13 +1,17 @@
 const myPromise = require('bluebird');
 const docName = require('../model/docName');
 const constant = require('../config/constant');
+const utilService = require('../service/utilService');
+const userOptionDao = require('../dao/userOptionDao');
 const docNameDao = {
 
     /**
      * 添加具体的文件到文件名表
      */
     adddocName:(userId, docfilename, level, docType, parentId) => {
-        parseInt(docType);
+        // parseInt(docType);
+        let time = new Date();
+        console.log("222222222",parentId, time);
         return new myPromise((resolve, reject) => {
             docName.create({
                 userId: userId,
@@ -34,9 +38,12 @@ const docNameDao = {
                 orgname: docfilename,
                 originlevel: level,
                 DocType: docType,
-                originparentid : parentId,
-                create_Time : createTime
-            }).then(data => {
+                originparentid : parentId
+            }).then(async data => {
+                utilService.dataValuesFormat(data);
+                console.log("2222222",data);
+                // let docNameid = data.docName.id;
+                // let info = await userOptionDao.adduserOption(userId, docNameid, optionType, docType);
                 resolve(data);
             },(err => {
                 reject(err);
@@ -117,6 +124,25 @@ const docNameDao = {
                 resolve(data);
             },(err => {
                 resolve(err);
+            }))
+        })
+    },
+    /**
+     * 判断是否该用户还保留初始文件夹目录
+     */
+    finddefaultFile:(userId) => {
+        return new myPromise((resolve, reject) => {
+            docName.findOne({
+                where:{
+                    user_Id: userId,
+                    DocType: constant.defaultdocType,
+                    docName :constant.defaultdocumentName,
+                    level: constant.levelOne
+                }
+            }).then(data =>{
+                resolve(data);
+            },(err => {
+                reject(err);
             }))
         })
     }

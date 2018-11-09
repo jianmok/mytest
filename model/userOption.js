@@ -1,6 +1,7 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
 const UserInfo = require('../model/userInfo');
+const docName = require('../model/docName')
 const  UserOption = sequelize.define('UserOption', {
     //用户id
     'userId': {
@@ -16,7 +17,7 @@ const  UserOption = sequelize.define('UserOption', {
         'primaryKey': true
     },
     //文件名id
-    'doc_Name_id': {
+    'docNameid': {
         'type': Sequelize.STRING,
         'field': 'doc_Name_id'
     },
@@ -49,4 +50,8 @@ const  UserOption = sequelize.define('UserOption', {
 });
 UserInfo.hasMany(UserOption,{foreignKey:'userId',sourceKey:'userId'});
 UserOption.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
+
+// docName.hasOne(UserOption,{foreignKey:'id',sourceKey:'docNameid'});
+// UserOption.belongsTo(docName,{foreignKey:'id',targetKey:'docNameid'});
+
 module.exports = UserOption;

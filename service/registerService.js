@@ -23,20 +23,20 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
             let createTime = new Date();
             password = utilService.md5Password(password);
             let userId = utilService.createUserId(createTime);
-            let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime);
+            let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime);//
             let token = utilService.createToken(userId);
-            let userToken = await userTokenDao.addUserToken(userId, token);
+            let userToken = await userTokenDao.addUserToken(userId, token);//
             let docfileName = constant.defaultdocumentName;
             let docType = constant.defaultdocType;
             console.log("ccccccccccccc",docfileName);
             let level = constant.doclevel;
             let parentId = constant.parentIdone;
-            let defaultdocName = await  docNameDao.adddocName(userId, docfileName, level, docType, parentId);
+            let defaultdocName = await  docNameDao.adddocName(userId, docfileName, level, docType, parentId);//
             if(data && data.length && userToken && userToken.length && defaultdocName && defaultdocName.length){
                 resultObj.code = "003";
                 resultObj.responsecode = "失败";
             }else{
-                resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
+                resultObj = utilService.responseCommon(resultObj, constant.ResponseInfo_Success);
             }
         }
         }else{
