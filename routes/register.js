@@ -1,5 +1,3 @@
-const express = require('express');
-const myPromise = require('bluebird');
 var constant = require('../config/constant');
 const apiService = require('../service/apiService');
 const testRegister = (req, res) => {

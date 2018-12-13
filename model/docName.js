@@ -38,7 +38,7 @@ const  docName = sequelize.define('docName', {
     },
     //文件类型
      'DocType ': {
-     'type': Sequelize.INTEGER,
+     'type': Sequelize.STRING,
      'field': 'Doc_Type'
      },
     //备注

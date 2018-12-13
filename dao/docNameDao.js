@@ -8,36 +8,37 @@ const docNameDao = {
     /**
      * 添加具体的文件到文件名表
      */
-    adddocName:(userId, docfilename, level, docType, parentId) => {
-        // parseInt(docType);
-        let time = new Date();
-        console.log("222222222",parentId, time);
-        return new myPromise((resolve, reject) => {
-            docName.create({
-                userId: userId,
-                orgname: docfilename,
-                originlevel: level,
-                DocType: docType,
-                otiginparentid: parentId
-            }).then(data => {
-                resolve(data);
-            },(err => {
-                reject(err);
-            }))
-        })
-    },
+    // adddocName:(userId, docfilename, level, docType, parentId) => {
+    //     // parseInt(docType);
+    //     let time = new Date();
+    //     console.log("222222222",parentId, time, docType, typeof(docType));
+    //     return new myPromise((resolve, reject) => {
+    //         docName.create({
+    //             userId: userId,
+    //             orgname: docfilename,
+    //             originlevel: level,
+    //             DocType: docType,
+    //             otiginparentid: parentId
+    //         }).then(data => {
+    //             resolve(data);
+    //         },(err => {
+    //             reject(err);
+    //         }))
+    //     })
+    // },
     /**
      * 添加具体的文件到文件表（与上面操作可合起来）
      */
     addaFile:(userId, docfilename, level, docType, parentId) => {
         let createTime = new Date();
-        console.log("zhangjiajsjdlsjljfl",typeof(createTime),level,parentId, docType);
-        return new myPromise((resolve, reject) => {
+        parentId = parseInt(parentId);
+        console.log("zhangjiajsjdlsjljfl",parentId,typeof(level),typeof(parentId), typeof(docType));
+        return new myPromise((resolve, reject) => {  
             docName.create({
                 userId: userId,
                 orgname: docfilename,
                 originlevel: level,
-                DocType: docType,
+                Doc_Type: docType,    
                 originparentid : parentId
             }).then(async data => {
                 utilService.dataValuesFormat(data);
@@ -51,7 +52,7 @@ const docNameDao = {
         })
     },
     /**
-     * 
+     * 获取某一文件夹的内容
      */
     findfilesParentId:(userId, parentId) => {
         return new myPromise((resolve, reject) => {
@@ -96,6 +97,9 @@ const docNameDao = {
             }));
         })
     },
+    /**
+     * 获取某一用户的所有文件夹
+     */
     findFileNamebyid:(userId) => {
         console.log("zzzzzzzzzzzz", userId);
         return new myPromise((resolve, reject) => {
@@ -113,6 +117,9 @@ const docNameDao = {
             }))
         })
     },
+    /**
+     * 
+     */
     findFileNamebyParentId:(userId, parentId) => {
         return new myPromise((resolve, reject) => {
             docName.findAll({
@@ -140,6 +147,25 @@ const docNameDao = {
                     level: constant.levelOne
                 }
             }).then(data =>{
+                resolve(data);
+            },(err => {
+                reject(err);
+            }))
+        })
+
+    },
+    /**
+     * 获取某一用户的某一父节点的所有文件信息
+     */
+    ifInTable:(userId, parentId) => {
+        return new myPromise((resolve, reject) => {
+            docName.findAll({
+                where: {
+                    userId:userId,
+                    origin_parent_id: parentId,
+                    Doc_Type: 5004
+                }
+            }).then(data => {
                 resolve(data);
             },(err => {
                 reject(err);

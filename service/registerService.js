@@ -27,11 +27,11 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
             let token = utilService.createToken(userId);
             let userToken = await userTokenDao.addUserToken(userId, token);//
             let docfileName = constant.defaultdocumentName;
-            let docType = constant.defaultdocType;
+            let docType = constant.defaultDocument;
             console.log("ccccccccccccc",docfileName);
             let level = constant.doclevel;
             let parentId = constant.parentIdone;
-            let defaultdocName = await  docNameDao.adddocName(userId, docfileName, level, docType, parentId);//
+            let defaultdocName = await  docNameDao.addaFile(userId, docfileName, level, docType, parentId);//
             if(data && data.length && userToken && userToken.length && defaultdocName && defaultdocName.length){
                 resultObj.code = "003";
                 resultObj.responsecode = "失败";
@@ -49,6 +49,9 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
     }
     })
 }
+/**
+ * 登录
+ */
 registerService.prototype.iflogin = (name,password) => {
     return new myPromise(async(resolve, reject) => {
         let resultObj = {};
@@ -67,7 +70,7 @@ registerService.prototype.iflogin = (name,password) => {
             password = utilService.md5Password(password);
             let data = await userInfoDao.findifHaveuser(name, password);
             if(data != null){
-                resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
+                resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Success);
             }else{
                 resultObj.code = "005";
                 resultObj.responsecode = "重新输入密码"

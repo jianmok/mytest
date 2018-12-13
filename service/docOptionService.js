@@ -1,17 +1,20 @@
 const service = require('../service/apiService');
-const myPromise = require('bluebird');
+const MyPromise = require('bluebird');
 const utilService = require('../service/utilService');
 const userInfoDao = require('../dao/userInfoDao');
 const docNameDao = require('../dao/docNameDao');
 const constant = require('../config/constant');
 const userOptionDao = require('../dao/userOptionDao');
+const _ = require('underscore');
+
+
 function docOptionService() {
 }
 /**
  * 保存文件
  */
 docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parentId, docType, level) => {
-    return new myPromise(async(resolve, reject) => {
+    return new MyPromise(async(resolve, reject) => {
         let level;
         let resultObj = {};
         parseInt(docType);
@@ -19,7 +22,7 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
         if(data && data.length){
             utilService.dataValuesFormat(data);
             parentId = data.parentId;
-            level = 2;
+            level = 2; 
         }
         if(docType == 5001){
             if(docComment && docComment.length){
@@ -38,11 +41,11 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
         if(answer && answer.length){
             resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
             resolve(resultObj);
-        }
+        }  
     })
 }
 docOptionService.prototype.deleteDocument = (userId,fileId, docType) => {
-    return new myPromise(async(resolve, reject) => {
+    return new MyPromise(async(resolve, reject) => {
         try{
             let resultObj = {};
             let data = await docNameDao.deleteocName(userId, fileId, docType);
@@ -58,7 +61,7 @@ docOptionService.prototype.deleteDocument = (userId,fileId, docType) => {
 }
 
 docOptionService.prototype.getDocName = (userId) => {
-    return new myPromise((resolve, reject) => {
+    return new MyPromise((resolve, reject) => {
         let resultObj = {};
         docNameDao.findFileNamebyid(userId).then(data => {
             if(data && data.length){
@@ -77,7 +80,7 @@ docOptionService.prototype.getDocName = (userId) => {
  * 根据文件夹id获取其中的文件（文件id、创建时间）
  */
 docOptionService.prototype.getDocFile = (userId, parentId) => {
-    return new myPromise((resolve, reject) => {
+    return new MyPromise((resolve, reject) => {
         let promList = [];
         let resultObj = {};
         promList.push(docNameDao.findFileNamebyParentId(userId, parentId));
@@ -95,5 +98,33 @@ docOptionService.prototype.getDocFile = (userId, parentId) => {
         }))
         })
 }
-
+/**
+ * 获取可用文件名
+ */
+docOptionService.prototype.getUsefulDocName = (userId, docfileName, parentId) => {
+    return new MyPromise((resolve, reject) => {
+        docNameDao.ifInTable(userId, parentId).then(data => {
+            data = utilService.dataValuesFormat(data);
+            let resultObj = {};
+            console.log("-=======jddddds", data);
+            let ifInTable = _.find(data, 'docname');
+            console.log("----------------", ifInTable);
+            if (ifInTable) {
+                let j = 1;
+                let name = constant.defaultDocument + 'j';
+                let ifnewdocIn = _.find(data, 'orgname');
+                if (ifnewdocIn) {
+                    j ++;
+                }else{
+                    resultObj.orgName = name;
+                }
+            } else {
+                resultObj.orgName = docfileName;
+            }
+            resolve(resultObj);
+        },(err => {
+            reject(err);
+        }))
+    })
+}
 module.exports = docOptionService;

@@ -29,7 +29,7 @@ const getDocFile = (req, res) => {
         res.send(data);
     })
 }
-
+ 
 /**
  * 
  * @param  docName  文件名
@@ -41,23 +41,32 @@ const getDocFile = (req, res) => {
  */
 const newDoc = (req, res) => {
     const userId = utilService.getCurrentUserId(req);
-    console.log("zhangjiaojiao",userId);
+    console.log("zhangjiaojiao", userId);
     let docfileName = req.query.docfileName;
     let docComment = req.body.docComment;
     let docType = req.query.docType;
-    let parentId = req.query.parentId? parentId: 0;//此项若是文件夹内的需要传输
-    let level = req.query.level? level: null;//父节点的level,若是文件夹内的需要穿，否则传输为1
+    let parentId = req.query.parentId ? parentId : 0; //此项若是文件夹内的需要传输
+    let level = req.query.level ? level : null; //父节点的level,若是文件夹内的需要穿，否则传输为1
     let docOptionServices = apiService.docOptionService;
-    docOptionServices.saveDocument(userId, docfileName, docComment,parentId, docType, level).then(data => {
+    docOptionServices.saveDocument(userId, docfileName, docComment, parentId, docType, level).then(data => {
         res.send(data);
-    }) 
+    })
 }
 /**
  * 还需一个获取文件夹名的接口
  * @param {*} req 
  * @param {*} res 
  */
-
+const getDocName = (req, res) => {
+    const userId = utilService.getCurrentUserId(req);
+    console.log("zhangjiaojiao", userId);
+    let docfileName = req.query.docfileName;
+    let parentId = req.query.parentId;
+    let docOptionServices = apiService.docOptionService;
+    docOptionServices.getUsefulDocName(userId, docfileName, parentId).then(data => {
+        res.send(data);
+    })
+}
 
 /**
  * 删除文件包括文件夹和文件
@@ -80,11 +89,12 @@ const deleteDoc = (req, res) => {
 //     const userId = utilService.getCurrentUserId(req);
 //     console.log()
 // }
-module.exports  = function(app, isAuthenticated) {
-    var __base_path_api = constant.api_version + "/userOption"; 
-    app.post(__base_path_api + '/NewDoc',isAuthenticated, newDoc);//新增文件
-    app.post(__base_path_api + '/deleteDoc',deleteDoc)//删除文件
-    app.get(__base_path_api + '/getDoc',getDoc)//获取文件列表信息（包括表名，表id，文件父id）
-    app.get(__base_path_api + '/getDocFile',getDocFile);//（根据表id查询具体表的数据和近期操作数据
+module.exports = function (app, isAuthenticated) {
+    var __base_path_api = constant.api_version + "/userOption";
+    app.post(__base_path_api + '/NewDoc', isAuthenticated, newDoc); //新增文件
+    app.post(__base_path_api + '/deleteDoc', deleteDoc) //删除文件
+    app.get(__base_path_api + '/getDoc', getDoc) //获取文件列表信息（包括表名，表id，文件父id）
+    app.get(__base_path_api + '/getDocFile', getDocFile); //（根据表id查询具体表的数据和近期操作数据
     // app.put(__base_path_api + 'saveDoc',saveDoc)//保存文件（保存按钮)
+    app.get(__base_path_api + '/getDocName', getDocName); //（根据表id查询具体表的数据和近期操作数据
 };
