@@ -1,5 +1,6 @@
 const userInfo = require('../model/UserInfo');
 var MyPromise = require('bluebird');
+const _ = require('underscore');
 const userInfoDao = {
     ifInuserTable:(name) => {
         return new MyPromise((resolve, reject) => {
@@ -29,6 +30,7 @@ const userInfoDao = {
                 Tel: Tel,
                 createTime: createTime,
             }).then(data =>{
+                _.map(data, 'dataValues');
                 resolve(data);
             },(err => {
                 reject(err);

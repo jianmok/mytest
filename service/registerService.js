@@ -5,6 +5,7 @@ const userInfoDao = require('../dao/userInfoDao');
 const userTokenDao = require('../dao/userTokenDao');
 const constant = require('../config/constant');
 const docNameDao = require('../dao/docNameDao');
+const _ = require('underscore');
 function registerService() {
 }
 /**
@@ -24,6 +25,7 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
             password = utilService.md5Password(password);
             let userId = utilService.createUserId(createTime);
             let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime);//
+            console.log("datataaaaaaaaaaaaaa",data);
             let token = utilService.createToken(userId);
             let userToken = await userTokenDao.addUserToken(userId, token);//
             let docfileName = constant.defaultdocumentName;
