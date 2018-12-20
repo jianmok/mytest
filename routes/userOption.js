@@ -31,7 +31,7 @@ const getDocFile = (req, res) => {
 }
  
 /**
- * 
+ * 创建文件夹和文件
  * @param  docName  文件名
  * @param  docComment 文件内容
  * @param  docComment 文件类型(5001:笔记；5002：markdown; 5003:笔记模板; 5004：新建文件夹（此默认在我的文件中的我的收藏被添加）)
@@ -69,7 +69,7 @@ const getDocName = (req, res) => {
 }
 
 /**
- * 删除文件包括文件夹和文件
+ * 删除文件包括文件夹和文件 
  * @param {} req 
  * @param {*} res 
  */
@@ -83,18 +83,29 @@ const deleteDoc = (req, res) => {
     })
 }
 /**
- * 上传文件和文件夹
+ * 更新文件
  */
-// const  docInput = (req,res) => {
-//     const userId = utilService.getCurrentUserId(req);
-//     console.log()
-// }
+const updateDoc = (req, res) => {
+    let userId = utilService.getCurrentUserId(req);
+    let fileId = req.query.fileId;
+    let comment = req.body.comment;
+    let parentId = req.body.parentId;
+    let docOptionServices = apiService.docOptionService;
+    docOptionServices.updateDoc(userId, fileId, parentId, comment).then(data => {
+        res.send(data);
+    });
+
+
+}
+ /**
+  * 读取文件
+  */
 module.exports = function (app, isAuthenticated) {
     var __base_path_api = constant.api_version + "/userOption";
     app.post(__base_path_api + '/NewDoc', isAuthenticated, newDoc); //新增文件
     app.post(__base_path_api + '/deleteDoc', deleteDoc) //删除文件
     app.get(__base_path_api + '/getDoc', getDoc) //获取文件列表信息（包括表名，表id，文件父id）
     app.get(__base_path_api + '/getDocFile', getDocFile); //（根据表id查询具体表的数据和近期操作数据
-    // app.put(__base_path_api + 'saveDoc',saveDoc)//保存文件（保存按钮)
+    app.put(__base_path_api + 'updateDoc',updateDoc)//保存文件（保存按钮)
     app.get(__base_path_api + '/getDocName', getDocName); //（根据表id查询具体表的数据和近期操作数据
 };

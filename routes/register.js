@@ -1,5 +1,10 @@
 var constant = require('../config/constant');
 const apiService = require('../service/apiService');
+/**
+ * 注册接口
+ * @param {*} req 
+ * @param {*} res 
+ */
 const testRegister = (req, res) => {
     // let userId = req.query.userId ? userId: null;
     let name = req.query.name;

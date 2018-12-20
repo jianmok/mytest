@@ -2,30 +2,8 @@ const myPromise = require('bluebird');
 const docName = require('../model/docName');
 const constant = require('../config/constant');
 const utilService = require('../service/utilService');
-const userOptionDao = require('../dao/userOptionDao');
+const userOption = require('../model/userOption');
 const docNameDao = {
-
-    /**
-     * 添加具体的文件到文件名表
-     */
-    // adddocName:(userId, docfilename, level, docType, parentId) => {
-    //     // parseInt(docType);
-    //     let time = new Date();
-    //     console.log("222222222",parentId, time, docType, typeof(docType));
-    //     return new myPromise((resolve, reject) => {
-    //         docName.create({
-    //             userId: userId,
-    //             orgname: docfilename,
-    //             originlevel: level,
-    //             DocType: docType,
-    //             otiginparentid: parentId
-    //         }).then(data => {
-    //             resolve(data);
-    //         },(err => {
-    //             reject(err);
-    //         }))
-    //     })
-    // },
     /**
      * 添加具体的文件到文件表（与上面操作可合起来）
      */
@@ -41,16 +19,12 @@ const docNameDao = {
                 Doc_Type: docType,    
                 originparentid : parentId
             }).then(async data => {
-                utilService.dataValuesFormat(data);
-                console.log("2222222",data);
-                // let docNameid = data.docName.id;
-                // let info = await userOptionDao.adduserOption(userId, docNameid, optionType, docType);
-                resolve(data);
+               resolve(data);
+                })
             },(err => {
                 reject(err);
             }))
-        })
-    },
+        },
     /**
      * 获取某一文件夹的内容
      */
@@ -72,7 +46,7 @@ const docNameDao = {
      * docType有5001新建笔记5002：新建Markdowm 5003：新建模板笔记 5004 新建文件夹 5005 导入world 5006：上传文件 5007：上传文件夹
      * 对应600x代表其上操作的删除
      */
-    deleteocName: (userId, fileId,docType) => {
+    deleteocName: (userId, fileId, docType) => {
         return new myPromise((resolve, reject) => {
             let whereParams;
             if(docType == constant.defaultDocument){

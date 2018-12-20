@@ -24,25 +24,21 @@ registerService.prototype.loginInterface = (name,trueName, password,Tel) => {
             let createTime = new Date();
             password = utilService.md5Password(password);
             let userId = utilService.createUserId(createTime);
-            let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime);//
-            console.log("datataaaaaaaaaaaaaa",data);
             let token = utilService.createToken(userId);
-            let userToken = await userTokenDao.addUserToken(userId, token);//
             let docfileName = constant.defaultdocumentName;
-            let docType = constant.defaultDocument;
-            console.log("ccccccccccccc",docfileName);
-            let level = constant.doclevel;
-            let parentId = constant.parentIdone;
-            let defaultdocName = await  docNameDao.addaFile(userId, docfileName, level, docType, parentId);//
-            if(data && data.length && userToken && userToken.length && defaultdocName && defaultdocName.length){
-                resultObj.code = "003";
-                resultObj.responsecode = "失败";
-            }else{
+            let docType = constant.defaultDocument;//文件操作
+            let level = constant.doclevel;//文件表信息
+            let parentId = constant.parentIdone;//文件表信息
+            let data = await userInfoDao.addUser(userId, name, trueName, password,Tel,createTime,token, docfileName,level,docType,parentId);//向用户表中插入信息
+            if(data){
                 resultObj = utilService.responseCommon(resultObj, constant.ResponseInfo_Success);
+            }else{
+                resultObj.responCode = "003";
+                resultObj.responsecode = "失败";
             }
         }
         }else{
-            resultObj.code = "001";
+            resultObj.responCode = "001";
             resultObj.responsecode = "重新输入昵称"
         }
         resolve(resultObj);
@@ -58,15 +54,15 @@ registerService.prototype.iflogin = (name,password) => {
     return new myPromise(async(resolve, reject) => {
         let resultObj = {};
         if (name == "null") {
-            resultObj.code = "001"
+            resultObj.responCode = "001"
             resultObj.responsecode = "重新输入昵称";
         } else if (password == "null") {
-            resultObj.code = "002";
+            resultObj.responCode = "002";
             resultObj.responsecode = "密码为空";
         }else{
         let ifInuserTable = await userInfoDao.ifInuserTable(name);
         if(ifInuserTable == null){
-            resultObj.code = "001"
+            resultObj.responCode = "001"
             resultObj.responsecode = "重新输入昵称";
         }else{
             password = utilService.md5Password(password);
@@ -74,7 +70,7 @@ registerService.prototype.iflogin = (name,password) => {
             if(data != null){
                 resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Success);
             }else{
-                resultObj.code = "005";
+                resultObj.responCode = "005";
                 resultObj.responsecode = "重新输入密码"
             }
         }}

@@ -38,12 +38,12 @@ const  docName = sequelize.define('docName', {
     },
     //文件类型
      'DocType ': {
-     'type': Sequelize.STRING,
+     'type': Sequelize.INTEGER,
      'field': 'Doc_Type'
      },
     //备注
     'remark': {
-        'type': Sequelize.STRING,
+        'type': Sequelize.INTEGER,
         'field': 'remark'
     }
 }, {

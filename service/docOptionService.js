@@ -6,6 +6,7 @@ const docNameDao = require('../dao/docNameDao');
 const constant = require('../config/constant');
 const userOptionDao = require('../dao/userOptionDao');
 const _ = require('underscore');
+const inputInfoDao = require('../dao/inputInfoDao');
 
 
 function docOptionService() {
@@ -28,22 +29,21 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
             if(docComment && docComment.length){
                 docfileName = docComment.slice(0,20);
             }
-            // OptionType = 
         }
         if(docType == constant.defaultDocument){
             level = 1; 
             // parentId = 0;
         }
-        console.log("zhang",docfileName);
         let answer = await docNameDao.addaFile(userId, docfileName, level, docType, parentId);
-        console.log("111111111111",answer);
-        // let datas = await userOptionDao.addOption(userId,docName, docType, )
         if(answer && answer.length){
             resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
             resolve(resultObj);
         }  
     })
 }
+/**
+ * 删除文件包括文件夹和文件 
+ */
 docOptionService.prototype.deleteDocument = (userId,fileId, docType) => {
     return new MyPromise(async(resolve, reject) => {
         try{
@@ -59,7 +59,9 @@ docOptionService.prototype.deleteDocument = (userId,fileId, docType) => {
         }
     })
 }
-
+/**
+ * 
+ */
 docOptionService.prototype.getDocName = (userId) => {
     return new MyPromise((resolve, reject) => {
         let resultObj = {};
@@ -121,10 +123,29 @@ docOptionService.prototype.getUsefulDocName = (userId, docfileName, parentId) =>
             } else {
                 resultObj.orgName = docfileName;
             }
+            resultObj = utilService.responseCommon(resultObj, constant.ResponseInfo_Success);
             resolve(resultObj);
         },(err => {
             reject(err);
         }))
     })
+}
+/**
+ * 更新文件内容
+ */
+docOptionService.prototype.updateDoc = (userId, fileId, comment) => {
+    return new MyPromise(async(resolve, reject) => {
+        let resultObj = {};
+        if(fileId){
+            let data = await inputInfoDao.updateDoc(userId, fileId, parentId,  comment);
+                if(data && data.length){
+                    resultObj = utilService.responseCommon(resultObj, constant.ResponseInfo_Success);
+                }else{
+                    resultObj = utilService.responseCommon(resultObj, constant.ErrorCode_Failed);
+                }
+        }
+    },(err =>{
+        reject(err);
+    }))
 }
 module.exports = docOptionService;
