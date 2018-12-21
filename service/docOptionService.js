@@ -34,7 +34,9 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
             level = 1; 
             // parentId = 0;
         }
-        let answer = await docNameDao.addaFile(userId, docfileName, level, docType, parentId);
+        let createTime = new Date();
+        let optionType = constant.optionTypeAdd;
+        let answer = await docNameDao.addaFile(userId, docfileName, level, docType, parentId,createTime, optionType);
         if(answer && answer.length){
             resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
             resolve(resultObj);
@@ -49,12 +51,16 @@ docOptionService.prototype.deleteDocument = (userId,fileId, docType) => {
         try{
             let resultObj = {};
             let data = await docNameDao.deleteocName(userId, fileId, docType);
-            resultObj.list = data;
-            // if(data && data.length){
-            //     resultObj = utilService.responseCommon(resultObj,ResponseInfo_Success);
-            // }
+            // resultObj.list = data;
+            console.log("22222222222", data);
+            if(data){  
+                resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Null);
+            }else{
+                resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Success);
+            }
             resolve(resultObj);
         }catch (err){
+            console.log("err",err);
             resolve(err);
         }
     })
@@ -147,5 +153,13 @@ docOptionService.prototype.updateDoc = (userId, fileId, comment) => {
     },(err =>{
         reject(err);
     }))
+}
+/**
+ * 获取文件内容
+ */
+docOptionService.prototype.getDocFileInfo = (userId, fileId, parentId) => {
+    return new MyPromise((resolve, reject) => {
+        
+    })
 }
 module.exports = docOptionService;

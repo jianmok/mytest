@@ -1,6 +1,7 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
 const UserInfo = require('../model/userInfo');
+const userOption = require('../model/userOption');
 const  docName = sequelize.define('docName', {
     //用户id
     'userId': {
@@ -27,19 +28,19 @@ const  docName = sequelize.define('docName', {
         'field': 'origin_level'
     },
     //父节点
-    'originparentid ': {
+    'originparentid': {
         'type': Sequelize.INTEGER,
         'field': 'origin_parent_id'
     },
     //操作时间
-    'createTime ': {
+    'createTime': {
         'type': Sequelize.DATE,
         'field': 'create_Time'
     },
     //文件类型
-     'DocType ': {
-     'type': Sequelize.INTEGER,
-     'field': 'Doc_Type'
+     'docType': {
+        'type': Sequelize.INTEGER,
+        'field': 'doc_Type',
      },
     //备注
     'remark': {
@@ -56,5 +57,7 @@ const  docName = sequelize.define('docName', {
 UserInfo.hasMany(docName,{foreignKey:'userId',sourceKey:'userId'});
 docName.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
 
+docName.hasOne(userOption,{foreignKey:'id',sourceKey:'docNameid'});
+userOption.belongsTo(docName,{foreignKey:'docNameid',targetKey:'id'});
 
 module.exports = docName;

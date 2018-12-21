@@ -7,24 +7,32 @@ const docNameDao = {
     /**
      * 添加具体的文件到文件表（与上面操作可合起来）
      */
-    addaFile:(userId, docfilename, level, docType, parentId) => {
-        let createTime = new Date();
+    addaFile: (userId, docfileName, level, docType, parentId,createTime, optionType) => {
         parentId = parseInt(parentId);
-        console.log("zhangjiajsjdlsjljfl",parentId,typeof(level),typeof(parentId), typeof(docType));
-        return new myPromise((resolve, reject) => {  
+        console.log("zhangjiajsjdlsjljfl", docType);
+        return new myPromise((resolve, reject) => {
             docName.create({
                 userId: userId,
-                orgname: docfilename,
+                docType: docType,
+                orgname: docfileName,
                 originlevel: level,
-                Doc_Type: docType,    
-                originparentid : parentId
-            }).then(async data => {
-               resolve(data);
+                originparentid: parentId
+            }).then(data => {
+                return userOption.create({
+                    userId: userId,
+                    docType: docType,
+                    optionType: optionType,
+                    createTime: createTime,
+                    originparentid: parentId
+                }).then(optionInfo => {
+                    resolve(optionInfo);
                 })
             },(err => {
+                console.log("kkkkkkkkkkk",err);
                 reject(err);
             }))
-        },
+        })
+    },
     /**
      * 获取某一文件夹的内容
      */
@@ -116,7 +124,7 @@ const docNameDao = {
             docName.findOne({
                 where:{
                     user_Id: userId,
-                    DocType: constant.defaultdocType,
+                    docType: constant.defaultdocType,
                     docName :constant.defaultdocumentName,
                     level: constant.levelOne
                 }

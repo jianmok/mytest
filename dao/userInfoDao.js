@@ -26,7 +26,6 @@ const userInfoDao = {
      */
     addUser:(userId, name, trueName, password,Tel,createTime,token, docfileName,level,docType,parentId) => {
         return new MyPromise((resolve, reject) => {
-            console.log("1111111111",createTime);
             userInfo.create({
                 userId: userId,
                 userName: name,
@@ -39,13 +38,11 @@ const userInfoDao = {
                     userId: userId,
                     userToken: token
                 }).then(tokenInfo => {
-                    // docType = parseInt(docType);
-                    console.log("222222========================2",level,parentId, typeof(docType), typeof(level));
                     return docName.create({
                         userId: userId,
                         orgname: docfileName,
                         originlevel: level,
-                        DocType: docType,    
+                        docType: docType,    
                         originparentid : parentId
                     }).then(docNameInfo => {
                         resolve(docNameInfo);   

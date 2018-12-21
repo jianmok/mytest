@@ -1,7 +1,6 @@
 const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
 const UserInfo = require('../model/userInfo');
-const docName = require('../model/docName')
 const  UserOption = sequelize.define('UserOption', {
     //用户id
     'userId': {
@@ -12,9 +11,10 @@ const  UserOption = sequelize.define('UserOption', {
     'id': {
         'type': Sequelize.INTEGER,
         'field': 'id',
-        'allowNull': false,
+        'allowNull': false, 
         'unique': true,
-        'primaryKey': true
+        'primaryKey': true,
+        'autoIncrement': true 
     },
     //文件名id
     'docNameid': {
@@ -25,6 +25,10 @@ const  UserOption = sequelize.define('UserOption', {
     'docType': {
         'type': Sequelize.INTEGER,
         'field': 'doc_Type'
+     },
+    'originparentid': {
+        'type': Sequelize.INTEGER,
+        'field': 'origin_parent_id'
     },
     //操作类型(添加删除等)
     'optionType': {
@@ -32,7 +36,7 @@ const  UserOption = sequelize.define('UserOption', {
         'field': 'option_Type'
     },
     //操作时间
-    'create_Time ': {
+    'create_Time': {
         'type': Sequelize.INTEGER,
         'field': 'create_Time'
     },
@@ -44,7 +48,7 @@ const  UserOption = sequelize.define('UserOption', {
 }, {
     // 自定义表名称
     'freezeTableName': true,
-    'tableName': 'user_Option',
+    'tableName': 'user_option',
     // 不需要时间戳
     'timestamps': false,
 });

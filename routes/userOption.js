@@ -43,7 +43,7 @@ const newDoc = (req, res) => {
     const userId = utilService.getCurrentUserId(req);
     console.log("zhangjiaojiao", userId);
     let docfileName = req.query.docfileName;
-    let docComment = req.body.docComment;
+    let docComment = req.body.docComment;  
     let docType = req.query.docType;
     let parentId = req.query.parentId ? parentId : 0; //此项若是文件夹内的需要传输
     let level = req.query.level ? level : null; //父节点的level,若是文件夹内的需要穿，否则传输为1
@@ -57,7 +57,7 @@ const newDoc = (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const getDocName = (req, res) => {
+const getuserfulDocName = (req, res) => {
     const userId = utilService.getCurrentUserId(req);
     console.log("zhangjiaojiao", userId);
     let docfileName = req.query.docfileName;
@@ -75,7 +75,7 @@ const getDocName = (req, res) => {
  */
 const deleteDoc = (req, res) => {
     const userId = utilService.getCurrentUserId(req);
-    let fileId = req.query.fileId;
+    let fileId = req.query.fileId;  
     let docType = req.query.docType;
     let docOptionServices = apiService.docOptionService;
     docOptionServices.deleteDocument(userId, fileId, docType).then(data => {
@@ -100,6 +100,15 @@ const updateDoc = (req, res) => {
  /**
   * 读取文件
   */
+ const getDocInfo = (req, res) => {
+    let userId = utilService.getCurrentUserId(req);
+    let fileId =  req.query.fileId;
+    let parentId = req.query.parentId;
+    const docOptionServices = apiService.docOptionService;
+    docOptionServices.getDocFileInfo(userId, fileId, parentId).then(data => {
+        res.send(data);
+    })
+ }
 module.exports = function (app, isAuthenticated) {
     var __base_path_api = constant.api_version + "/userOption";
     app.post(__base_path_api + '/NewDoc', isAuthenticated, newDoc); //新增文件
@@ -107,5 +116,5 @@ module.exports = function (app, isAuthenticated) {
     app.get(__base_path_api + '/getDoc', getDoc) //获取文件列表信息（包括表名，表id，文件父id）
     app.get(__base_path_api + '/getDocFile', getDocFile); //（根据表id查询具体表的数据和近期操作数据
     app.put(__base_path_api + 'updateDoc',updateDoc)//保存文件（保存按钮)
-    app.get(__base_path_api + '/getDocName', getDocName); //（根据表id查询具体表的数据和近期操作数据
+    app.get(__base_path_api + '/getDocName', getuserfulDocName); //（根据表id查询具体表的数据和近期操作数据
 };
