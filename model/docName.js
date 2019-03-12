@@ -2,6 +2,8 @@ const sequelize = require('../config/setting');
 const Sequelize = require('Sequelize');
 const UserInfo = require('../model/userInfo');
 const userOption = require('../model/userOption');
+const inputInfo  = require('../model/inputInfo');
+
 const  docName = sequelize.define('docName', {
     //用户id
     'userId': {
@@ -59,5 +61,8 @@ docName.belongsTo(UserInfo,{foreignKey:'userId',targetKey:'userId'});
 
 docName.hasOne(userOption,{foreignKey:'id',sourceKey:'docNameid'});
 userOption.belongsTo(docName,{foreignKey:'docNameid',targetKey:'id'});
+
+docName.hasOne(inputInfo,{foreignKey:'id',sourceKey:'docNameid'});
+inputInfo.belongsTo(docName,{foreignKey:'docNameid',targetKey:'id'});
 
 module.exports = docName;

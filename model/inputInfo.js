@@ -44,11 +44,16 @@ const inputInfo = sequelize.define('inputInfo', {
     'remark': {
         'type': Sequelize.STRING,
         'field': 'remark'
+    },
+    //fuid
+    'originParentId':{
+        type: Sequelize.INTEGER,
+        field: 'origin_parent_id'
     }
 }, {
     // 自定义表名称
     'freezeTableName': true,
-    'tableName': 't_inputInfo',
+    'tableName': 't_inputinfo',
     // 不需要时间戳
     'timestamps': false,
 });

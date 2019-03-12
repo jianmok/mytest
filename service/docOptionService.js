@@ -32,7 +32,6 @@ docOptionService.prototype.saveDocument = (userId,docfileName,docComment, parent
         }
         if(docType == constant.defaultDocument){
             level = 1; 
-            // parentId = 0;
         }
         let createTime = new Date();
         let optionType = constant.optionTypeAdd;
@@ -51,8 +50,6 @@ docOptionService.prototype.deleteDocument = (userId,fileId, docType) => {
         try{
             let resultObj = {};
             let data = await docNameDao.deleteocName(userId, fileId, docType);
-            // resultObj.list = data;
-            console.log("22222222222", data);
             if(data){  
                 resultObj = utilService.responseCommon(resultObj,constant.ResponseInfo_Null);
             }else{
@@ -159,7 +156,11 @@ docOptionService.prototype.updateDoc = (userId, fileId, comment) => {
  */
 docOptionService.prototype.getDocFileInfo = (userId, fileId, parentId) => {
     return new MyPromise((resolve, reject) => {
-        
+        userInfoDao.readFile(userId, fileId, parentId).then(data => {
+            resolve(data);
+        },(err => {
+            reject(err);
+        }))
     })
 }
 module.exports = docOptionService;

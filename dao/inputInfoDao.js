@@ -2,7 +2,9 @@ const userInfo = require('../model/UserInfo');
 const inputInfo = require('../model/inputInfo');
 var MyPromise = require('bluebird');
 const inputInfoDao = {
-
+    /**
+     * 更新文件内容
+     */
     updateDoc:(userId, fieldId, parentId, comment) => {
         console.log("jjjjjjjjjj",userId, parentId);
         return new MyPromise((resolve, reject) => {
@@ -20,5 +22,16 @@ const inputInfoDao = {
             }))
         })
     },
+    readFile:(userId, fileId, parentId) => {
+        return new MyPromise((resolve, reject) => {
+            userInfo.findOne({
+                where:{
+                    userId: userId,
+                    docNameId: fieldId,
+                
+                }
+            })
+        })
+    }
 }
 module.exports = inputInfoDao;
